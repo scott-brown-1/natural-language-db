@@ -1,8 +1,0 @@
-Question: What are the most common model families?
-SQL query: SELECT Model_Family.family_name, COUNT(Model_Family_Model.model_id) AS family_count
-FROM Model_Family
-JOIN Model_Family_Model ON Model_Family.family_id = Model_Family_Model.family_id
-GROUP BY Model_Family.family_name
-ORDER BY family_count DESC;
-Query results: [('Supervised', 11), ('Nonparametric', 8), ('Parametric', 3), ('Tree-based', 2), ('Time Series', 2), ('Penalized ', 2), ('Generalized Linear Model', 2), ('Ensemble', 2), ('Deep learning', 2), ('Unsupervised', 1), ('Probabilistic', 1), ('Neural Network', 1), ('Lazy Learning', 1), ('Kernel method', 1), ('Geospatial', 1), ('Clustering', 1), ('Boosting', 1), ('Bayesian', 1)]
-Natural language answer: The most common model families are Supervised, Nonparametric, and Parametric.
