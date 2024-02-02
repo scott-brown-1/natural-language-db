@@ -1,0 +1,58 @@
+Question: Which users have more than one project?
+SQL query: SELECT u.username
+FROM "user" AS u 
+JOIN "project" AS p ON u.user_id = p.user_id
+GROUP BY u.username
+HAVING COUNT(p.project_id) > 1;
+Query results: [('user11',), ('user13',), ('user3',), ('user5',), ('user7',), ('user9',)]
+Natural language answer: The users who have more than one project are 'user11', 'user13', 'user3', 'user5', 'user7', and 'user9'.
+
+Question: Which models are the most popular?
+SQL query: SELECT model_name, COUNT(project_id) AS usage_count
+FROM project_model
+JOIN model ON project_model.model_id = model.model_id
+GROUP BY model.model_id
+ORDER BY usage_count DESC;
+Query results: [('Neural Network', 4), ('K-Nearest Neighbors', 3), ('Gradient Boosting', 2), ('Naive Bayes', 2), ('Logistic Regression', 2), ('ARIMA', 2), ('Poisson Regression', 1), ('Prophet', 1), ('K-Means', 1), ('Penalized Regression', 1), ('Support Vector Machine', 1), ('Random Forest', 1)]
+Natural language answer: The most popular model based on usage count is the 'Neural Network' model, which is used in 4 projects. Following that, the 'K-Nearest Neighbors' model is used in 3 projects.
+
+Question: Do any users that aren't paying have more than 2 projects?
+SQL query: SELECT user.username, COUNT(project.project_id) as project_count
+FROM user
+LEFT JOIN project ON user.user_id = project.user_id
+INNER JOIN plan ON user.plan_id = plan.plan_id
+WHERE plan.monthly_price = 0
+GROUP BY user.username
+HAVING project_count > 2;
+Query results: []
+Natural language answer: No, there are no users using the free plan that have more than 2 projects.
+
+Question: Which data types are most common?
+SQL query: SELECT data_type, COUNT(*) as count
+FROM "data"
+GROUP BY data_type
+ORDER BY count DESC;
+Query results: [('csv', 6), ('fth', 5), ('txt', 4), ('tsv', 4), ('tiff', 1), ('jpg', 1)]
+Natural language answer: The most common data type is 'csv' with 6 occurrences. This is followed by 'fth' with 5 occurrences, then 'txt' and 'tsv' both with 4 occurrences. 'tiff' and 'jpg' are the least common, each with just a single occurrence.
+
+Question: On average, how many data files to users upload to each project?
+SQL query: SELECT AVG(data_count) 
+FROM (
+  SELECT COUNT(data_id) as data_count
+  FROM project_data
+  GROUP BY project_id
+);
+Query results: [(1.0,)]
+Natural language answer: On average, users upload one data file to each project.
+
+Question: What is the best plan?
+SQL query: Since there isn't a specified criteria for "best plan", I am assuming the "best plan" is the one with most users. Therefore, we will return the "plan_id" that has the most users associated with it:
+
+```sql
+SELECT plan_id, COUNT(*) as UserCount
+FROM user
+GROUP BY plan_id
+ORDER BY UserCount DESC
+LIMIT 1;
+```
+Query results: None
