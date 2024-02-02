@@ -109,8 +109,8 @@ def get_schema_string() -> str:
     with open(CREATE_TABLES_PATH, 'r') as create_tables:
         sql: str = create_tables.read()
     
-    ## Remove newlines and extra spaces to use fewer tokens
-    sql_cleaned:str = " ".join(sql.replace("\n", "").strip().split())
+    ## Unify spaces and convert to lowercase for consistency in prompt
+    sql_cleaned:str = ' '.join(sql.lower().split())
     return sql_cleaned
 
 def create_db() -> None:
