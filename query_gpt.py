@@ -40,13 +40,21 @@ def prompt_to_sql(prompt: str) -> str:
     schema: str = get_schema_string()
     engineered_prompt = f"""
         /* {schema} */ 
-        -- Write valid SQLite to answer the foldlowing question for the tables provided above. Reply only with the SQL code and no comments.
+        -- Write valid SQLite to answer the following question for the tables provided above. Reply only with the SQL code and no comments.
 
         Question: {prompt}
         """
     
     system_prompt = """You are given a database schema and a question. You respond with valid SQLite code to retrieve the answer from the database. 
-    You can only reply with code and no natural language or markdown."""
+    Reply only with code and no natural language or markdown. For example:
+    
+    Question: "Which projects use random forests?"
+    Response: SELECT p.project_name FROM "Project" AS p
+                INNER JOIN Project_Model AS pm on p.project_id = pm.project_id
+                INNER JOIN Model AS m on pm.model_id = m .model_id
+                WHERE LOWER(m.model_name) = LOWER('random forest');
+
+    """
     
     ## Query GPT to get SQL code
     response: str = query_openai(engineered_prompt, system_prompt=system_prompt)

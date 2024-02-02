@@ -164,3 +164,6 @@ cython_debug/
 
 # Runtime outputs
 *.out
+
+# Testing files
+testing.ipynb
